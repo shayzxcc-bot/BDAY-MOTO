@@ -89,6 +89,8 @@ h1 span {
   background: var(--terracotta);
   box-shadow: 0 4px 0 #8e432e;
   transition: transform .15s, box-shadow .15s, background .15s;
+  display: inline-block;
+  text-decoration: none;
 }
 
 .button:hover {
