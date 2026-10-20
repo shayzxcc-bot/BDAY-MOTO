@@ -1,231 +1,107 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Little Birthday World ♡</title>
-  <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      color: #68465e;
-      background: #fff5f0;
-      font-family: Georgia, serif;
-    }
-
-    button { font: inherit; cursor: pointer; }
-
-    .screen {
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      overflow: hidden;
-      position: relative;
-      background:
-        radial-gradient(ellipse at 15% 20%, #fff0b9 0 4%, transparent 5%),
-        radial-gradient(ellipse at 85% 75%, #f8d8e9 0 7%, transparent 8%),
-        linear-gradient(145deg, #fff5e9, #f8ddec 55%, #e9e0ff);
-    }
-
-    .star {
-      position: absolute;
-      color: white;
-      font-size: 24px;
-      animation: twinkle 2s infinite alternate;
-      pointer-events: none;
-    }
-
-    @keyframes twinkle {
-      from { opacity: .3; transform: scale(.8); }
-      to { opacity: 1; transform: scale(1.2); }
-    }
-
-    .card {
-      width: min(100%, 580px);
-      padding: 48px 24px;
-      text-align: center;
-      border: 2px solid #fff;
-      border-radius: 28px;
-      background: rgba(255, 251, 248, .82);
-      box-shadow: 0 15px 50px #a8799625;
-      position: relative;
-      z-index: 1;
-    }
-
-    .eyebrow {
-      font-size: 12px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: #b17b9c;
-    }
-
-    h1 {
-      margin: 22px 0 10px;
-      font-size: clamp(40px, 9vw, 68px);
-      font-weight: normal;
-      line-height: 1.05;
-    }
-
-    h1 span {
-      display: block;
-      color: #c17e9e;
-      font-style: italic;
-    }
-
-    .message {
-      line-height: 1.8;
-      color: #8e7187;
-      margin: 22px auto 28px;
-    }
-
-    .enter {
-      padding: 15px 32px;
-      border: 0;
-      border-radius: 50px;
-      background: #c17e9e;
-      color: white;
-      box-shadow: 0 5px 0 #9f5f80;
-      transition: transform .2s;
-    }
-
-    .enter:hover { transform: translateY(-3px); }
-
-    .room {
-      display: none;
-      min-height: 100vh;
-      padding: 30px 20px;
-      text-align: center;
-      background: linear-gradient(#f8e5f0, #fff3dc);
-    }
-
-    .room h2 {
-      font-size: clamp(32px, 7vw, 48px);
-      font-weight: normal;
-    }
-
-    .room-art {
-      max-width: 600px;
-      margin: 25px auto;
-      padding: 32px 16px;
-      border: 4px solid #fff;
-      border-radius: 20px;
-      background: #f4d7e4;
-      box-shadow: 6px 6px 0 #d5b1c9;
-    }
-
-    .decorations {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      font-size: 55px;
-    }
-
-    .decorations button {
-      border: 0;
-      background: transparent;
-      font-size: inherit;
-      transition: transform .2s;
-    }
-
-    .decorations button:hover {
-      transform: translateY(-8px) rotate(-5deg);
-    }
-
-    .note {
-      min-height: 50px;
-      line-height: 1.7;
-      margin-top: 24px;
-    }
-
-    .back {
-      margin-top: 25px;
-      background: transparent;
-      border: 1px solid #c17e9e;
-      border-radius: 30px;
-      padding: 10px 20px;
-      color: #8b5577;
-    }
-
-    @media (max-width: 480px) {
-      .card { padding: 36px 18px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation: none !important;
-        transition: none !important;
-      }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff8ef">
+  <meta name="description" content="A tiny, interactive birthday party room.">
+  <title>a little party room · happy birthday</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
-  <main class="screen" id="welcome">
-    <span class="star" style="top:12%;left:15%">✦</span>
-    <span class="star" style="top:20%;right:13%;animation-delay:.5s">✧</span>
-    <span class="star" style="bottom:17%;left:12%;animation-delay:1s">✦</span>
-    <span class="star" style="bottom:12%;right:17%;animation-delay:.7s">♡</span>
+  <section id="welcome" class="welcome">
+    <div class="welcome-card">
+      <p class="eyebrow">✦ YOU'RE INVITED ✦</p>
+      <h1>a little<br><span>party room</span></h1>
+      <p class="subtitle">happy birthday ♡</p>
+      <button id="enter" class="button">★ &nbsp; enter &nbsp; ★</button>
+      <p class="hint">click enter to come inside</p>
+    </div>
+    <span class="floating star-one">✦</span>
+    <span class="floating star-two">✧</span>
+    <span class="floating heart-one">♡</span>
+  </section>
 
-    <section class="card">
-      <p class="eyebrow">a tiny world made for you</p>
-      <h1>a little <span>birthday dream</span></h1>
-      <p class="message">
-        A little place filled with love, memories,<br>
-        and tiny surprises just for you. ♡
-      </p>
-      <button class="enter" id="enterButton">✦ Enter our little world ✦</button>
-      <p style="font-size:12px;color:#b18ca5;margin-top:25px">
-        made with love, just for you
-      </p>
-    </section>
-  </main>
+  <main id="room" class="room" hidden>
+    <header class="room-header">
+      <button id="back" class="text-button">← back</button>
+      <p>✧ a tiny birthday universe ✧</p>
+      <span>♡</span>
+    </header>
 
-  <main class="room" id="partyRoom">
-    <p class="eyebrow">welcome to your special day</p>
-    <h2>Our Little Party Room ♡</h2>
-    <p>Every little thing here is waiting for you.</p>
+    <section class="room-scene">
+      <div class="scene-sign">HAPPY BIRTHDAY!</div>
 
-    <section class="room-art">
-      <div class="decorations">
-        <button data-note="A balloon full of hugs, just for you! 🎈" aria-label="Balloon">🎈</button>
-        <button data-note="Make a wish and blow out your candles! 🎂" aria-label="Birthday cake">🎂</button>
-        <button data-note="A little flower to brighten your day. 🌷" aria-label="Flower">🌷</button>
-        <button data-note="Sending you a little pixel-sized hug! 🐱" aria-label="Cat">🐱</button>
-        <button data-note="You deserve all the stars in the sky! ⭐" aria-label="Star">⭐</button>
+      <div class="decorations" aria-hidden="true">
+        <span>✦</span><span>♡</span><span>✧</span>
       </div>
-      <p class="note" id="surpriseNote" aria-live="polite">
-        ✨ Click any decoration to discover a little surprise.
-      </p>
+
+      <section class="station balloons-station">
+        <p class="station-label">🎈 pop a balloon</p>
+        <div id="balloons" class="balloons">
+          <button class="balloon pink" aria-label="Pop pink balloon">♥</button>
+          <button class="balloon peach" aria-label="Pop peach balloon">♥</button>
+          <button class="balloon lilac" aria-label="Pop lilac balloon">♥</button>
+          <button class="balloon yellow" aria-label="Pop yellow balloon">♥</button>
+          <button class="balloon blue" aria-label="Pop blue balloon">♥</button>
+        </div>
+        <p id="balloon-message" class="message" aria-live="polite"></p>
+      </section>
+
+      <section class="station cake-station">
+        <p class="station-label">🎂 make a wish</p>
+        <button id="cake" class="cake" aria-label="Blow out the birthday candles">
+          <span class="candles"><i>🕯️</i><i>🕯️</i><i>🕯️</i></span>
+          <span class="cake-top"></span>
+          <span class="cake-middle"></span>
+          <span class="cake-bottom"></span>
+          <span class="cake-plate"></span>
+        </button>
+        <p id="cake-message" class="message">click the cake to blow out the candles</p>
+      </section>
+
+      <section class="station pet-station">
+        <p class="station-label">🐾 say hello</p>
+        <button id="cat" class="cat" aria-label="Pet the party cat">🐈</button>
+        <p id="cat-message" class="message">psst... i'm the birthday kitty</p>
+      </section>
+
+      <section class="station notes-station">
+        <p class="station-label">💌 leave a little love</p>
+        <form id="note-form">
+          <label for="note">Write a birthday message</label>
+          <textarea id="note" maxlength="120" rows="3" required placeholder="wishing you all the lovely things..."></textarea>
+          <button class="button" type="submit">pin your note ♡</button>
+        </form>
+        <div id="notes" class="notes" aria-live="polite"></div>
+      </section>
+
+      <section class="station photo-station">
+        <p class="station-label">📸 little photo booth</p>
+        <div class="photo-frame">
+          <video id="video" autoplay playsinline muted hidden></video>
+          <canvas id="canvas" hidden></canvas>
+          <div id="photo-placeholder">♡<br><span>your birthday memories go here</span></div>
+          <img id="photo" alt="Your birthday photo" hidden>
+        </div>
+        <div class="photo-actions">
+          <button id="start-camera" class="button">open camera</button>
+          <button id="take-photo" class="button" hidden>say cheese!</button>
+          <button id="download-photo" class="button" hidden>download ♡</button>
+        </div>
+        <p id="camera-message" class="message" aria-live="polite">camera access is optional</p>
+      </section>
     </section>
 
-    <button class="back" id="backButton">← Back to the entrance</button>
+    <footer class="footer">
+      made with love, just for you ♡
+      <p>stay a little. make a little wish.</p>
+    </footer>
   </main>
-
-  <script>
-    const welcome = document.getElementById('welcome');
-    const partyRoom = document.getElementById('partyRoom');
-
-    document.getElementById('enterButton').addEventListener('click', () => {
-      welcome.style.display = 'none';
-      partyRoom.style.display = 'block';
-      window.scrollTo(0, 0);
-    });
-
-    document.getElementById('backButton').addEventListener('click', () => {
-      partyRoom.style.display = 'none';
-      welcome.style.display = 'grid';
-      window.scrollTo(0, 0);
-    });
-
-    document.querySelectorAll('[data-note]').forEach((item) => {
-      item.addEventListener('click', () => {
-        document.getElementById('surpriseNote').textContent =
-          item.dataset.note;
-      });
-    });
-  </script>
 </body>
 </html>
