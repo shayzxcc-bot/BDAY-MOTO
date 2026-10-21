@@ -738,10 +738,15 @@ textarea::placeholder {
 .pixel-room-decor {
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   overflow: hidden;
   pointer-events: none;
   image-rendering: pixelated;
+}
+
+.room-scene > :not(.pixel-room-decor) {
+  position: relative;
+  z-index: 1;
 }
 
 /* Pixel-art night window */
