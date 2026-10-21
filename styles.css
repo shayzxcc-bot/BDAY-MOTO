@@ -1,20 +1,22 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
 
+/* =========================================
+   BDAY-MOTO — PIXEL BEDROOM GAME
+   Complete stylesheet replacement
+   ========================================= */
+
 :root {
-  --cream: #fff0f0;
-  --paper: #21131a;
-  --terracotta: #ff304f;
-  --brown: #fff0f0;
-  --muted: #d58c9b;
-  --pink: #ff5277;
-  --peach: #ff795f;
-  --lilac: #bd75ff;
-  --yellow: #ffd166;
-  --blue: #77d9ff;
-  --black: #100b12;
+  --bg: #100910;
+  --wall: #21101e;
+  --panel: #241321;
+  --red: #ff304f;
   --red-dark: #8c102e;
-  --pixel-border: #6b2439;
+  --pink: #ff91aa;
+  --cream: #fff0f0;
+  --muted: #d58c9b;
+  --gold: #ffd166;
+  --border: #713047;
 }
 
 * {
@@ -26,25 +28,30 @@
 }
 
 html {
+  min-height: 100%;
+  background: var(--bg);
   scroll-behavior: smooth;
-  background: var(--black);
 }
 
 body {
-  margin: 0;
   min-height: 100vh;
-  color: var(--brown);
+  margin: 0;
+  color: var(--cream);
   background:
-    radial-gradient(ellipse at 50% 0%, #451324 0%, transparent 65%),
-    var(--black);
+    radial-gradient(ellipse at 50% 0%, #451324 0%, transparent 60%),
+    var(--bg);
   font-family: "VT323", monospace;
   font-size: 21px;
-  image-rendering: pixelated;
 }
 
 button,
 textarea {
   font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
 }
 
 button {
@@ -54,30 +61,32 @@ button {
 button:focus-visible,
 textarea:focus-visible,
 a:focus-visible {
-  outline: 3px dashed var(--yellow);
-  outline-offset: 5px;
+  outline: 3px dashed var(--gold);
+  outline-offset: 4px;
 }
 
 ::selection {
   color: white;
-  background: var(--terracotta);
+  background: var(--red);
 }
 
-/* WELCOME SCREEN */
+/* =========================================
+   WELCOME SCREEN
+   ========================================= */
 
 .welcome {
   position: relative;
+  isolation: isolate;
   display: grid;
   place-items: center;
   min-height: 100svh;
   padding: 28px;
   overflow: hidden;
-  isolation: isolate;
   background:
     linear-gradient(#ff304f0a 1px, transparent 1px),
     linear-gradient(90deg, #ff304f0a 1px, transparent 1px),
-    radial-gradient(ellipse at center, #391020 0%, #160c14 60%, #09070c 100%);
-  background-size: 8px 8px, 8px 8px, auto;
+    radial-gradient(ellipse at center, #391020, #160c14 65%, #09070c);
+  background-size: 16px 16px, 16px 16px, auto;
 }
 
 .welcome::before {
@@ -105,52 +114,45 @@ a:focus-visible {
   padding: clamp(30px, 7vw, 65px) 24px;
   text-align: center;
   background: #1d101b;
-  border: 4px solid var(--terracotta);
-  border-radius: 0;
-  box-shadow:
-    8px 8px 0 #710f2c,
-    0 0 35px #ff304f24,
-    inset 0 0 0 4px #ffffff08;
+  border: 4px solid var(--red);
+  box-shadow: 8px 8px 0 #710f2c, 0 0 35px #ff304f24;
 }
 
 .eyebrow,
 .station-label {
-  color: var(--terracotta);
+  color: var(--red);
   font-family: "Press Start 2P", monospace;
   font-size: 10px;
   line-height: 2;
-  letter-spacing: 1px;
 }
 
 h1 {
   margin: 32px 0 20px;
-  color: #fff0f0;
+  color: var(--cream);
   font-family: "Press Start 2P", monospace;
   font-size: clamp(24px, 6vw, 43px);
   line-height: 1.65;
-  text-shadow: 4px 4px 0 #8c102e;
+  text-shadow: 4px 4px 0 var(--red-dark);
 }
 
 h1 span {
-  color: var(--terracotta);
-  font-style: normal;
-  text-shadow: 3px 3px 0 #631127;
+  color: var(--red);
 }
 
 .subtitle {
   margin: 24px 0;
-  color: #ff9aad;
+  color: var(--pink);
   font-size: 27px;
   letter-spacing: 2px;
 }
 
 .button {
   display: inline-block;
-  padding: 15px 20px;
+  padding: 14px 18px;
   border: 0;
   border-radius: 0;
   color: white;
-  background: var(--terracotta);
+  background: var(--red);
   box-shadow:
     inset -4px -4px 0 #9d1935,
     inset 4px 4px 0 #ff8193,
@@ -163,20 +165,12 @@ h1 span {
 }
 
 .button:hover {
-  filter: brightness(1.2);
-  transform: translateY(-3px);
-  box-shadow:
-    inset -4px -4px 0 #9d1935,
-    inset 4px 4px 0 #ff8193,
-    0 8px 0 #650d27;
+  filter: brightness(1.15);
+  transform: translateY(-2px);
 }
 
 .button:active {
-  transform: translateY(4px);
-  box-shadow:
-    inset -3px -3px 0 #9d1935,
-    inset 3px 3px 0 #ff8193,
-    0 1px 0 #650d27;
+  transform: translateY(3px);
 }
 
 .hint,
@@ -189,49 +183,37 @@ h1 span {
 .floating {
   position: absolute;
   z-index: 1;
-  color: var(--terracotta);
+  color: var(--red);
   font-size: 34px;
-  text-shadow: 0 0 14px #ff304f88;
   animation: pixel-float 2.5s steps(4, end) infinite;
 }
 
-.star-one {
-  top: 14%;
-  left: 13%;
-}
-
-.star-two {
-  top: 23%;
-  right: 12%;
-  animation-delay: -1s;
-}
-
-.heart-one {
-  bottom: 15%;
-  left: 18%;
-  animation-delay: -.5s;
-}
+.star-one { top: 14%; left: 13%; }
+.star-two { top: 23%; right: 12%; animation-delay: -1s; }
+.heart-one { bottom: 15%; left: 18%; animation-delay: -.5s; }
 
 @keyframes pixel-float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
+  50% { transform: translateY(-8px); }
 }
 
-/* ROOM HEADER */
+/* =========================================
+   PAGE HEADER
+   ========================================= */
 
 .room {
-  width: min(100% - 28px, 1120px);
-  margin: auto;
-  padding-bottom: 35px;
+  width: min(100% - 28px, 1180px);
+  margin: 0 auto;
+  padding-bottom: 28px;
 }
 
 .room-header {
-  min-height: 75px;
+  min-height: 65px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  color: #ff91a7;
+  color: var(--pink);
   font-size: 19px;
 }
 
@@ -240,580 +222,185 @@ h1 span {
 }
 
 .text-button {
-  border: 0;
   padding: 8px 0;
+  border: 0;
   background: transparent;
-  color: var(--terracotta);
+  color: var(--red);
   font-family: "Press Start 2P", monospace;
   font-size: 10px;
 }
 
 .text-button:hover {
   color: white;
-  text-shadow: 0 0 10px var(--terracotta);
 }
 
-/* PIXEL ROOM */
-
-.room-scene {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-  overflow: hidden;
-  padding: 80px clamp(14px, 4vw, 42px) 38px;
-  border: 4px solid #a52c4c;
-  border-radius: 0;
-  background-color: #20111c;
-  background-image:
-    linear-gradient(#ff304f0c 2px, transparent 2px),
-    linear-gradient(90deg, #ff304f0c 2px, transparent 2px);
-  background-size: 24px 24px;
-  box-shadow:
-    inset 0 -18px #09070c,
-    8px 8px 0 #590e27,
-    0 0 35px #ff304f0d;
-}
-
-.room-scene::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 15px;
-  background: repeating-linear-gradient(
-    90deg,
-    #ff304f 0 24px,
-    #74142f 24px 48px
-  );
-}
-
-.scene-sign {
-  position: absolute;
-  top: 27px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: max-content;
-  max-width: 90%;
-  padding: 13px 16px;
-  border: 3px solid var(--terracotta);
-  border-radius: 0;
-  background: #160b13;
-  color: #ffb0bd;
-  font-family: "Press Start 2P", monospace;
-  font-size: 10px;
-  line-height: 1.8;
-  letter-spacing: 1px;
-  text-align: center;
-  box-shadow: 4px 4px 0 #68132c, 0 0 15px #ff304f22;
-}
-
-.decorations {
-  position: absolute;
-  top: 110px;
-  right: 7%;
-  display: flex;
-  gap: 8px;
-  color: var(--terracotta);
-  font-size: 25px;
-  text-shadow: 0 0 12px #ff304f77;
-  pointer-events: none;
-}
-
-/* INTERACTIVE STATIONS */
-
-.station {
-  position: relative;
-  z-index: 1;
-  min-width: 0;
-  padding: 22px 14px;
-  text-align: center;
-  border: 3px solid #713047;
-  border-radius: 0;
-  background: #1b111b;
-  box-shadow:
-    5px 5px 0 #0d0810,
-    inset 0 0 0 3px #ffffff04;
-  transition: border-color .15s, transform .15s, box-shadow .15s;
-}
-
-.station:hover {
-  border-color: #b92b4c;
-  box-shadow: 5px 5px 0 #0d0810, 0 0 16px #ff304f12;
-}
-
-.station-label {
-  margin: 0 0 20px;
-  letter-spacing: 0;
-  line-height: 1.9;
-}
-
-/* BALLOONS */
-
-.balloons {
-  min-height: 150px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-}
-
-.balloon {
-  position: relative;
-  width: 45px;
-  height: 55px;
-  border: 3px solid #ffffff55;
-  border-radius: 45% 45% 35% 35%;
-  color: white;
-  font-size: 20px;
-  box-shadow: inset -5px -5px #00000022, inset 4px 4px #ffffff30;
-  transition: transform .15s, filter .15s;
-}
-
-.balloon::after {
-  content: "";
-  position: absolute;
-  top: 52px;
-  left: 18px;
-  height: 24px;
-  border-left: 2px dashed #b65c75;
-}
-
-.balloon:hover {
-  transform: translateY(-6px);
-  filter: brightness(1.3);
-}
-
-.pink { background: #ff5277; }
-.peach { background: #ff795f; }
-.lilac { background: #bd75ff; }
-.yellow { background: #ffd166; }
-.blue { background: #77d9ff; }
-
-.balloon.popped {
-  visibility: hidden;
-  transform: scale(1.5);
-}
-
-/* BIRTHDAY CAKE */
-
-.cake {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  filter: drop-shadow(4px 4px 0 #08060b);
-  transition: transform .15s;
-}
-
-.cake:hover {
-  transform: translateY(-4px);
-}
-
-.candles {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  height: 36px;
-  font-size: 24px;
-}
-
-.candles i {
-  font-style: normal;
-  animation: candle 0.6s steps(2, end) infinite alternate;
-}
-
-@keyframes candle {
-  from { transform: translateY(0); }
-  to { transform: translateY(-3px); }
-}
-
-.cake-top {
-  z-index: 1;
-  width: 125px;
-  height: 24px;
-  margin-bottom: -7px;
-  border: 3px solid #ff8193;
-  border-radius: 50%;
-  background: #bd75a9;
-}
-
-.cake-middle {
-  width: 120px;
-  height: 28px;
-  border: 3px solid #ff8193;
-  background: repeating-linear-gradient(
-    90deg,
-    #ffb6c7 0 15px,
-    #742344 15px 30px
-  );
-}
-
-.cake-bottom {
-  width: 140px;
-  height: 36px;
-  border: 3px solid #ff8193;
-  border-radius: 0 0 8px 8px;
-  background: repeating-linear-gradient(
-    90deg,
-    #ff795f 0 18px,
-    #a32c49 18px 36px
-  );
-}
-
-.cake-plate {
-  width: 166px;
-  height: 13px;
-  border: 3px solid #ff8193;
-  border-radius: 50%;
-  background: #21131a;
-}
-
-.cake.is-blown .candles {
-  visibility: hidden;
-}
-
-.cake.is-blown .cake-top {
-  background: #75475d;
-}
-
-/* BIRTHDAY CAT */
-
-.cat {
-  display: block;
-  margin: 8px auto 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  font-size: clamp(4rem, 10vw, 6rem);
-  image-rendering: pixelated;
-  filter: drop-shadow(4px 4px 0 #09070c);
-  transition: transform .15s;
-}
-
-.cat:hover {
-  transform: translateY(-5px) scale(1.04);
-}
-
-.cat:active {
-  transform: scale(.95);
-}
-
-/* LOVE NOTES */
-
-.notes {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 15px;
-  text-align: left;
-}
-
-.note-card {
-  padding: 12px 10px;
-  overflow-wrap: anywhere;
-  border: 2px solid #a94c61;
-  background: #ffd166;
-  color: #35121e;
-  box-shadow: 4px 4px 0 #0d0810;
-  font-size: 19px;
-  line-height: 1.35;
-  transform: rotate(-1deg);
-}
-
-.note-card:nth-child(even) {
-  border-color: #ff5277;
-  background: #f6b1c1;
-  transform: rotate(1deg);
-}
-
-#note-form {
-  display: grid;
-  gap: 12px;
-  text-align: left;
-}
-
-#note-form label {
-  color: #ff9aad;
-  font-size: 19px;
-}
-
-textarea {
-  width: 100%;
-  min-height: 90px;
-  resize: vertical;
-  border: 3px solid #713047;
-  border-radius: 0;
-  padding: 12px;
-  color: #fff0f0;
-  background: #100b12;
-  font-size: 20px;
-}
-
-textarea::placeholder {
-  color: #9e6b7a;
-}
-
-#note-form .button {
-  width: 100%;
-}
-
-/* PHOTO BOOTH */
-
-.photo-frame {
-  position: relative;
-  display: grid;
-  place-items: center;
-  min-height: 210px;
-  overflow: hidden;
-  border: 5px solid #a52c4c;
-  outline: 3px solid #411728;
-  background:
-    linear-gradient(#ff304f0c 2px, transparent 2px),
-    linear-gradient(90deg, #ff304f0c 2px, transparent 2px),
-    #100b12;
-  background-size: 12px 12px;
-}
-
-.photo-frame video,
-.photo-frame img {
-  display: block;
-  width: 100%;
-  max-height: 320px;
-  object-fit: cover;
-  image-rendering: pixelated;
-}
-
-#photo-placeholder {
-  padding: 24px;
-  color: var(--terracotta);
-  font-size: 38px;
-  text-shadow: 0 0 12px #ff304f44;
-}
-
-#photo-placeholder span {
-  display: block;
-  margin-top: 8px;
-  color: #d58c9b;
-  font-size: 18px;
-  text-shadow: none;
-}
-
-.photo-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 18px;
-}
-
-.photo-actions .button {
-  font-size: 9px;
-}
-
-/* FOOTER */
-
-.footer {
-  padding: 35px 10px 15px;
-  color: #ff5277;
-  text-align: center;
-  font-family: "Press Start 2P", monospace;
-  font-size: 10px;
-  line-height: 2.2;
-  text-shadow: 0 0 12px #ff304f30;
-}
-
-.footer p {
-  color: #d58c9b;
-  font-family: "VT323", monospace;
-  font-size: 21px;
-  text-shadow: none;
-}
-
-/* MOBILE */
-
-@media (max-width: 650px) {
-  .room-scene {
-    grid-template-columns: 1fr;
-    gap: 16px;
-    padding: 82px 12px 28px;
-  }
-
-  .room-header {
-    font-size: 16px;
-  }
-
-  .room-header p {
-    max-width: 65%;
-  }
-
-  .text-button {
-    font-size: 9px;
-  }
-
-  .decorations {
-    top: 96px;
-    right: 6%;
-    font-size: 19px;
-  }
-
-  .welcome-card {
-    padding: 38px 18px;
-    box-shadow: 6px 6px 0 #710f2c;
-  }
-
-  .station {
-    padding: 20px 13px;
-  }
-
-  .station-label {
-    font-size: 9px;
-  }
-
-  .scene-sign {
-    font-size: 9px;
-  }
-
-  .notes {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 360px) {
-  .room {
-    width: calc(100% - 18px);
-  }
-
-  .room-header {
-    gap: 5px;
-  }
-
-  .room-header p {
-    font-size: 14px;
-  }
-
-  .scene-sign {
-    padding: 10px 8px;
-    font-size: 8px;
-  }
-
-  .button {
-    padding: 13px 12px;
-    font-size: 9px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: .01ms !important;
-  }
-}
-
-
-/* ===== PIXEL BEDROOM GAME DECORATIONS ===== */
+/* =========================================
+   BEDROOM SCENE
+   ========================================= */
 
 .room-scene {
   position: relative;
   isolation: isolate;
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.9fr;
+  grid-template-areas:
+    "balloons balloons cat"
+    "cake cake photo"
+    "notes notes photo";
+  grid-template-rows: 215px 245px minmax(280px, auto);
+  gap: 18px;
+  min-height: 850px;
+  padding: 100px 24px 30px;
   overflow: hidden;
-  background-color: #171017;
+  border: 4px solid #a52c4c;
+  background-color: #21101e;
   background-image:
-    linear-gradient(#301323 1px, transparent 1px),
-    linear-gradient(90deg, #301323 1px, transparent 1px);
-  background-size: 32px 32px;
+    linear-gradient(#ff304f12 1px, transparent 1px),
+    linear-gradient(90deg, #ff304f12 1px, transparent 1px);
+  background-size: 24px 24px;
+  box-shadow: 8px 8px 0 #590e27;
 }
 
-/* Decorative layer stays behind interactive objects */
+/* Checkerboard trim at the top of the room */
+.room-scene::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 14px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--red) 0 16px,
+    #73132f 16px 32px
+  );
+}
+
+/* Floor */
+.room-scene::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 15%;
+  border-top: 4px solid #8c2949;
+  background:
+    linear-gradient(#ff304f15 2px, transparent 2px),
+    linear-gradient(90deg, #ff304f15 2px, transparent 2px),
+    #190d19;
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+
+.scene-sign {
+  position: absolute;
+  z-index: 4;
+  top: 27px;
+  left: 50%;
+  width: max-content;
+  max-width: 90%;
+  padding: 12px 16px;
+  transform: translateX(-50%);
+  border: 3px solid var(--red);
+  background: #160b13;
+  color: var(--pink);
+  font-family: "Press Start 2P", monospace;
+  font-size: 10px;
+  line-height: 1.8;
+  text-align: center;
+  box-shadow: 4px 4px 0 #68132c;
+}
+
+.decorations {
+  position: absolute;
+  z-index: 1;
+  top: 110px;
+  right: 5%;
+  display: flex;
+  gap: 8px;
+  color: var(--red);
+  font-size: 25px;
+  pointer-events: none;
+}
+
+/* =========================================
+   PIXEL FURNITURE
+   These elements already exist in index.html
+   ========================================= */
+
 .pixel-room-decor {
   position: absolute;
-  inset: 0;
   z-index: 0;
+  inset: 0;
   overflow: hidden;
   pointer-events: none;
   image-rendering: pixelated;
 }
 
-.room-scene > :not(.pixel-room-decor) {
-  position: relative;
-  z-index: 1;
-}
-
-/* Pixel-art night window */
 .pixel-window {
   position: absolute;
-  top: 8%;
-  left: 8%;
-  width: 19%;
+  top: 9%;
+  left: 5%;
+  width: 23%;
   height: 29%;
-  border: 8px solid #09080f;
-  outline: 4px solid #a72c50;
+  border: 7px solid #09080f;
+  outline: 3px solid #a72c50;
   background:
     linear-gradient(90deg, transparent 46%, #080811 46% 54%, transparent 54%),
     linear-gradient(transparent 46%, #080811 46% 54%, transparent 54%),
     linear-gradient(180deg, #30204f, #a22e60 75%, #f16c75);
-  box-shadow: 8px 8px 0 #09080f;
+  box-shadow: 7px 7px 0 #09080f;
 }
 
 .window-shine {
   position: absolute;
   top: 12%;
   left: 14%;
-  width: 18%;
-  height: 18%;
+  width: 15%;
+  height: 15%;
   background: #ffb5c8;
   box-shadow: 18px 18px 0 #ffb5c8;
 }
 
 .window-moon {
   position: absolute;
-  right: 14%;
   top: 12%;
-  width: 18px;
-  height: 18px;
-  background: #ffe8a3;
-  box-shadow: 4px 4px 0 #ffe8a3;
+  right: 14%;
+  width: 15px;
+  height: 15px;
+  background: var(--gold);
+  box-shadow: 4px 4px 0 var(--gold);
 }
 
-/* Birthday wall poster */
 .pixel-poster {
   position: absolute;
   top: 12%;
-  right: 9%;
-  padding: 12px;
+  right: 5%;
+  padding: 10px;
   border: 4px solid #08070b;
   outline: 3px solid #e94b68;
   background: #54172e;
   color: #ffe6a6;
   font-family: "Press Start 2P", monospace;
-  font-size: clamp(7px, 1.2vw, 12px);
+  font-size: 9px;
   line-height: 2;
   text-align: center;
-  transform: rotate(2deg);
-  box-shadow: 6px 6px 0 #08070b;
+  box-shadow: 5px 5px 0 #08070b;
 }
 
-/* Wall shelf */
 .pixel-shelf {
   position: absolute;
-  top: 43%;
-  right: 8%;
+  top: 44%;
+  right: 5%;
   display: flex;
   gap: 10px;
-  width: 27%;
+  width: 25%;
   height: 10px;
-  background: #8b3949;
   border: 4px solid #09080f;
+  background: #8b3949;
   box-shadow: 0 8px 0 #351625;
 }
 
@@ -821,8 +408,8 @@ textarea::placeholder {
   width: 14px;
   height: 22px;
   margin-top: -27px;
-  background: #db596b;
   border: 3px solid #09080f;
+  background: #db596b;
 }
 
 .pixel-shelf span:nth-child(2) {
@@ -837,20 +424,21 @@ textarea::placeholder {
 /* Bed */
 .pixel-bed {
   position: absolute;
-  left: 5%;
+  z-index: 0;
+  left: 4%;
   bottom: 17%;
-  width: 37%;
-  height: 22%;
+  width: 35%;
+  height: 19%;
   border: 5px solid #09080f;
   background: #8e2949;
-  box-shadow: 0 12px 0 #09080f;
+  box-shadow: 0 10px 0 #09080f;
 }
 
 .pixel-bed::before {
   content: "";
   position: absolute;
-  left: -8px;
   top: -16px;
+  left: -7px;
   width: 100%;
   height: 18px;
   border: 5px solid #09080f;
@@ -879,16 +467,17 @@ textarea::placeholder {
     #53203d;
 }
 
-/* Computer desk */
+/* Desk */
 .pixel-desk {
   position: absolute;
-  right: 7%;
-  bottom: 19%;
-  width: 34%;
-  height: 12%;
+  z-index: 0;
+  right: 5%;
+  bottom: 17%;
+  width: 31%;
+  height: 11%;
   border: 5px solid #09080f;
   background: #8e394a;
-  box-shadow: 0 10px 0 #09080f;
+  box-shadow: 0 8px 0 #09080f;
 }
 
 .desk-screen {
@@ -896,22 +485,20 @@ textarea::placeholder {
   left: 25%;
   bottom: 100%;
   width: 48%;
-  height: 95px;
-  max-height: 220%;
-  border: 6px solid #09080f;
+  height: 65px;
+  border: 5px solid #09080f;
   background:
     linear-gradient(135deg, transparent 40%, #f15b79 41% 48%, transparent 49%),
     linear-gradient(#281a3b, #64234a);
-  box-shadow: inset 0 0 0 4px #8e345c;
 }
 
 .desk-screen::after {
   content: "♥";
   display: block;
-  margin-top: 12px;
+  margin-top: 8px;
   color: #ff8da7;
   text-align: center;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .desk-keyboard {
@@ -932,145 +519,555 @@ textarea::placeholder {
   position: absolute;
   top: 100%;
   left: 12%;
-  width: 12px;
-  height: 35px;
+  width: 10px;
+  height: 30px;
   background: #09080f;
-  box-shadow: 170px 0 #09080f;
+  box-shadow: 130px 0 #09080f;
 }
 
-/* Desk lamp */
 .pixel-lamp {
   position: absolute;
-  right: 36%;
-  bottom: 31%;
-  width: 20px;
-  height: 45px;
-  background: #e9b86f;
+  right: 34%;
+  bottom: 28%;
+  width: 18px;
+  height: 40px;
   border: 4px solid #09080f;
-  box-shadow: 0 -18px 0 -2px #f16c75;
+  background: #e9b86f;
+  box-shadow: 0 -16px 0 -2px #f16c75;
 }
 
-/* Gift boxes */
 .pixel-gift {
   position: absolute;
-  bottom: 13%;
-  width: 44px;
-  height: 38px;
+  bottom: 12%;
+  width: 38px;
+  height: 34px;
   border: 4px solid #09080f;
   background:
     linear-gradient(90deg, transparent 40%, #ffe3a3 40% 60%, transparent 60%),
     #b72e50;
-  box-shadow: 4px 6px 0 #09080f;
+  box-shadow: 4px 5px 0 #09080f;
 }
 
 .pixel-gift::before {
   content: "";
   position: absolute;
-  left: -7px;
   top: -10px;
-  width: 46px;
+  left: -7px;
+  width: 40px;
   height: 8px;
   border: 4px solid #09080f;
   background: #f16c75;
 }
 
-.gift-one {
-  left: 37%;
-}
-
+.gift-one { left: 37%; }
 .gift-two {
   left: 43%;
-  bottom: 12%;
+  bottom: 11%;
   transform: scale(.8);
   background-color: #57316c;
 }
 
-/* Floor rug */
 .pixel-rug {
   position: absolute;
-  bottom: 5%;
-  left: 23%;
-  width: 50%;
-  height: 9%;
-  border: 5px solid #09080f;
-  background:
-    repeating-linear-gradient(
-      90deg,
-      #7e2142 0 18px,
-      #c43e5c 18px 36px
-    );
-  box-shadow: inset 0 0 0 5px #301323;
+  bottom: 4%;
+  left: 24%;
+  width: 42%;
+  height: 8%;
+  border: 4px solid #09080f;
+  background: repeating-linear-gradient(
+    90deg,
+    #7e2142 0 18px,
+    #c43e5c 18px 36px
+  );
 }
 
-/* Keep the scene playful on smaller screens */
-@media (max-width: 600px) {
+/* =========================================
+   INTERACTIVE GAME STATIONS
+   ========================================= */
+
+.station {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  min-height: 0;
+  padding: 16px 13px;
+  border: 2px solid #74304b;
+  background: rgba(23, 12, 23, .94);
+  text-align: center;
+  box-shadow: 4px 4px 0 #09070c;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.station:hover {
+  border-color: var(--red);
+  box-shadow: 4px 4px 0 #09070c, 0 0 14px #ff304f20;
+}
+
+.station-label {
+  margin: 0 0 12px;
+  letter-spacing: 0;
+  line-height: 1.9;
+}
+
+.balloons-station { grid-area: balloons; }
+.cake-station { grid-area: cake; }
+.pet-station { grid-area: cat; }
+.notes-station { grid-area: notes; }
+.photo-station { grid-area: photo; }
+
+/* =========================================
+   BALLOONS
+   ========================================= */
+
+.balloons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  min-height: 125px;
+}
+
+.balloon {
+  position: relative;
+  width: 42px;
+  height: 52px;
+  border: 3px solid #ffffff55;
+  border-radius: 45% 45% 35% 35%;
+  color: white;
+  font-size: 20px;
+  box-shadow: inset -5px -5px #00000022, inset 4px 4px #ffffff30;
+  transition: transform .15s, filter .15s;
+}
+
+.balloon::after {
+  content: "";
+  position: absolute;
+  top: 49px;
+  left: 16px;
+  height: 20px;
+  border-left: 2px dashed #b65c75;
+}
+
+.balloon:hover {
+  transform: translateY(-5px);
+  filter: brightness(1.2);
+}
+
+.pink { background: #ff5277; }
+.peach { background: #ff795f; }
+.lilac { background: #bd75ff; }
+.yellow { background: #ffd166; }
+.blue { background: #77d9ff; }
+
+.balloon.popped {
+  visibility: hidden;
+  transform: scale(1.4);
+}
+
+/* =========================================
+   BIRTHDAY CAKE
+   ========================================= */
+
+.cake {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  filter: drop-shadow(4px 4px 0 #08060b);
+  transition: transform .15s;
+}
+
+.cake:hover { transform: translateY(-4px); }
+
+.candles {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  height: 34px;
+  font-size: 22px;
+}
+
+.candles i {
+  font-style: normal;
+  animation: candle .6s steps(2, end) infinite alternate;
+}
+
+@keyframes candle {
+  from { transform: translateY(0); }
+  to { transform: translateY(-3px); }
+}
+
+.cake-top {
+  z-index: 1;
+  width: 120px;
+  height: 22px;
+  margin-bottom: -6px;
+  border: 3px solid #ff8193;
+  border-radius: 50%;
+  background: #bd75a9;
+}
+
+.cake-middle {
+  width: 115px;
+  height: 27px;
+  border: 3px solid #ff8193;
+  background: repeating-linear-gradient(
+    90deg,
+    #ffb6c7 0 15px,
+    #742344 15px 30px
+  );
+}
+
+.cake-bottom {
+  width: 132px;
+  height: 32px;
+  border: 3px solid #ff8193;
+  background: repeating-linear-gradient(
+    90deg,
+    #ff795f 0 18px,
+    #a32c49 18px 36px
+  );
+}
+
+.cake-plate {
+  width: 155px;
+  height: 12px;
+  border: 3px solid #ff8193;
+  border-radius: 50%;
+  background: #21131a;
+}
+
+.cake.is-blown .candles { visibility: hidden; }
+.cake.is-blown .cake-top { background: #75475d; }
+
+/* =========================================
+   BIRTHDAY CAT
+   ========================================= */
+
+.cat {
+  display: block;
+  margin: 8px auto 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: clamp(3.5rem, 7vw, 5rem);
+  filter: drop-shadow(4px 4px 0 #09070c);
+  transition: transform .15s;
+}
+
+.cat:hover { transform: translateY(-5px) scale(1.04); }
+.cat:active { transform: scale(.95); }
+
+/* =========================================
+   BIRTHDAY NOTES
+   ========================================= */
+
+#note-form {
+  display: grid;
+  gap: 10px;
+  text-align: left;
+}
+
+#note-form label {
+  color: var(--pink);
+  font-size: 19px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 80px;
+  resize: vertical;
+  border: 2px solid #713047;
+  border-radius: 0;
+  padding: 10px;
+  color: var(--cream);
+  background: #100b12;
+  font-size: 20px;
+}
+
+textarea::placeholder { color: #9e6b7a; }
+
+#note-form .button { width: 100%; }
+
+.notes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+  text-align: left;
+}
+
+.note-card {
+  padding: 10px;
+  overflow-wrap: anywhere;
+  border: 2px solid #a94c61;
+  background: #ffd166;
+  color: #35121e;
+  box-shadow: 3px 3px 0 #0d0810;
+  font-size: 19px;
+  line-height: 1.35;
+  transform: rotate(-1deg);
+}
+
+.note-card:nth-child(even) {
+  border-color: var(--red);
+  background: #f6b1c1;
+  transform: rotate(1deg);
+}
+
+/* =========================================
+   PHOTO BOOTH
+   ========================================= */
+
+.photo-frame {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 190px;
+  overflow: hidden;
+  border: 4px solid #a52c4c;
+  background:
+    linear-gradient(#ff304f0c 2px, transparent 2px),
+    linear-gradient(90deg, #ff304f0c 2px, transparent 2px),
+    #100b12;
+  background-size: 12px 12px;
+}
+
+.photo-frame video,
+.photo-frame img {
+  display: block;
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+}
+
+#photo-placeholder {
+  padding: 20px;
+  color: var(--red);
+  font-size: 36px;
+}
+
+#photo-placeholder span {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 18px;
+}
+
+.photo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.photo-actions .button {
+  font-size: 9px;
+}
+
+/* =========================================
+   GAME HUD
+   ========================================= */
+
+.game-hud {
+  position: absolute;
+  z-index: 5;
+  top: 58px;
+  left: 24px;
+  max-width: calc(100% - 48px);
+  padding: 10px 12px;
+  border: 2px solid #74304b;
+  background: #160b13;
+  color: var(--pink);
+  font-family: "Press Start 2P", monospace;
+  font-size: 8px;
+  line-height: 1.9;
+}
+
+/* =========================================
+   FOOTER
+   ========================================= */
+
+.footer {
+  padding: 28px 10px 15px;
+  color: var(--red);
+  text-align: center;
+  font-family: "Press Start 2P", monospace;
+  font-size: 9px;
+  line-height: 2.2;
+}
+
+.footer p {
+  color: var(--muted);
+  font-family: "VT323", monospace;
+  font-size: 21px;
+}
+
+/* =========================================
+   RESPONSIVE LAYOUT
+   ========================================= */
+
+@media (max-width: 850px) {
+  .room-scene {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "balloons balloons"
+      "cake cat"
+      "notes notes"
+      "photo photo";
+    grid-template-rows: auto;
+    gap: 14px;
+    min-height: 0;
+    padding: 92px 16px 26px;
+  }
+
+  .station {
+    min-height: 190px;
+  }
+
+  .balloons-station,
+  .cake-station,
+  .pet-station,
+  .notes-station,
+  .photo-station {
+    min-width: 0;
+  }
+
   .pixel-window {
+    width: 25%;
+    height: 20%;
+  }
+
+  .pixel-bed {
+    bottom: 5%;
+    width: 35%;
+    height: 12%;
+  }
+
+  .pixel-desk {
+    bottom: 5%;
+    width: 30%;
+    height: 8%;
+  }
+
+  .pixel-rug {
+    bottom: 1%;
+  }
+}
+
+@media (max-width: 560px) {
+  .room {
+    width: calc(100% - 18px);
+  }
+
+  .room-header {
+    min-height: 58px;
+    font-size: 16px;
+  }
+
+  .room-header p {
+    max-width: 62%;
+  }
+
+  .room-scene {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 86px 12px 24px;
+  }
+
+  .room-scene > .station {
+    position: relative;
+    width: 100%;
+    min-height: 0;
+    padding: 18px 12px;
+  }
+
+  .scene-sign {
+    max-width: 94%;
+    padding: 10px 8px;
+    font-size: 8px;
+  }
+
+  .decorations {
+    display: none;
+  }
+
+  .pixel-window {
+    top: 5%;
+    left: 3%;
+    width: 29%;
+    height: 10%;
     border-width: 4px;
   }
 
   .pixel-poster {
-    padding: 6px;
+    top: 5%;
+    right: 3%;
+    padding: 5px;
+    font-size: 7px;
+  }
+
+  .pixel-shelf {
+    top: 16%;
   }
 
   .pixel-bed {
-    width: 40%;
+    bottom: 2%;
+    width: 38%;
+    height: 7%;
   }
 
   .pixel-desk {
-    width: 37%;
+    right: 3%;
+    bottom: 2%;
+    width: 30%;
+    height: 5%;
   }
 
   .desk-screen {
-    height: 55px;
+    height: 35px;
   }
 
-  .pixel-gift {
-    transform: scale(.75);
-    transform-origin: bottom left;
+  .pixel-lamp {
+    display: none;
+  }
+
+  .pixel-rug {
+    bottom: 0;
+    height: 3%;
+  }
+
+  .notes {
+    grid-template-columns: 1fr;
+  }
+
+  .photo-frame {
+    min-height: 170px;
+  }
+
+  .welcome-card {
+    padding: 38px 18px;
+  }
+
+  .button {
+    padding: 13px 12px;
+    font-size: 9px;
   }
 }
 
-
-/* ===== FIX PIXEL ROOM VISIBILITY ===== */
-
-.room-scene {
-  position: relative;
-  isolation: isolate;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
 }
-
-/* Keep the room decorations above the background */
-.room-scene .pixel-room-decor {
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* Keep existing birthday panels above the decorations */
-.room-scene > :not(.pixel-room-decor) {
-  position: relative;
-  z-index: 1;
-}
-
-/* Let the pixel bedroom show subtly around the game panels */
-.room-scene .station {
-  background-color: rgba(25, 13, 25, 0.88);
-}
-
-/* Give the room a more game-like floor */
-.room-scene {
-  background-image:
-    linear-gradient(rgba(255, 45, 85, 0.12) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 45, 85, 0.12) 1px, transparent 1px),
-    linear-gradient(180deg, #21101d, #100b12);
-  background-size: 24px 24px, 24px 24px, 100% 100%;
-}
-
-/* Make pixel furniture clearer */
-.room-scene .pixel-window,
-.room-scene .pixel-poster,
-.room-scene .pixel-bed,
-.room-scene .pixel-desk,
-.room-scene .pixel-gift,
-.room-scene .pixel-rug {
-  image-rendering: pixelated;
-}
-
