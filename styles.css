@@ -768,3 +768,226 @@ footer {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* =========================================
+   RESPONSIVE LAYOUT — PHONE, TABLET, DESKTOP
+   ========================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.game-screen,
+.welcome-screen {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.game-screen {
+  padding: clamp(10px, 2.5vw, 28px);
+}
+
+.game-header,
+.game-controls,
+.birthday-menu,
+.game-footer {
+  width: 100%;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.game-title {
+  text-align: center;
+}
+
+.game-world {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  min-width: 0;
+  margin: 12px auto 20px;
+  aspect-ratio: 1.25 / 1;
+  min-height: 340px;
+  max-height: 720px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.room-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.world-object,
+#player {
+  max-width: 100%;
+}
+
+.game-controls,
+.birthday-menu {
+  min-width: 0;
+}
+
+.quest-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.note-area,
+.photo-area,
+.message-panel {
+  width: 100%;
+  min-width: 0;
+}
+
+.note-area textarea,
+.note-area input {
+  width: 100%;
+  max-width: 100%;
+}
+
+.photo-frame {
+  width: 100%;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.photo-frame img,
+.photo-frame video,
+.photo-frame canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+.pixel-button,
+.small-button {
+  max-width: 100%;
+  touch-action: manipulation;
+}
+
+@media (min-width: 1200px) {
+  .game-screen {
+    padding: 28px 40px;
+  }
+
+  .game-world {
+    min-height: 480px;
+  }
+
+  .birthday-menu {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 700px) {
+  .game-screen {
+    padding: 10px;
+  }
+
+  .game-header {
+    gap: 8px;
+  }
+
+  .game-title {
+    font-size: clamp(10px, 2.5vw, 16px);
+  }
+
+  .quest-count {
+    font-size: 10px;
+  }
+
+  .game-world {
+    aspect-ratio: 1 / 1;
+    min-height: 320px;
+    max-height: none;
+    margin-top: 10px;
+    margin-bottom: 14px;
+  }
+
+  .quest-list {
+    grid-template-columns: 1fr;
+  }
+
+  .game-controls,
+  .birthday-menu {
+    padding: 12px;
+  }
+
+  .control-instructions {
+    font-size: 11px;
+    line-height: 1.8;
+  }
+
+  .note-area textarea {
+    min-height: 90px;
+    font-size: 14px;
+  }
+
+  .photo-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .photo-actions > * {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .game-screen {
+    padding: 6px;
+  }
+
+  .game-header {
+    gap: 5px;
+  }
+
+  .game-world {
+    min-height: 290px;
+  }
+
+  .game-controls,
+  .birthday-menu {
+    padding: 8px;
+  }
+}
