@@ -1,140 +1,236 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#fff8ef">
-  <meta name="description" content="A tiny, interactive birthday party room.">
-  <title>a little party room · happy birthday</title>
+  <meta name="theme-color" content="#100910">
+  <meta name="description" content="A tiny pixel-art birthday adventure made with love.">
+  <title>BDAY-MOTO | Pixel Birthday Adventure</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
 </head>
 <body>
-  <section id="welcome" class="welcome">
+
+  <!-- START SCREEN -->
+  <section id="welcome" class="welcome-screen">
+    <div class="welcome-stars" aria-hidden="true">✦　✧　✦　♡　✧</div>
     <div class="welcome-card">
-      <p class="eyebrow">✦ YOU'RE INVITED ✦</p>
-      <h1>a little<br><span>party room</span></h1>
-      <p class="subtitle">happy birthday ♡</p>
-      <button id="enter" class="button">★ &nbsp; enter &nbsp; ★</button>
-      <p class="hint">click enter to come inside</p>
+      <p class="eyebrow">A SPECIAL DAY HAS ARRIVED</p>
+      <div class="welcome-pixel-heart" aria-hidden="true">♥</div>
+      <h1>HAPPY<br><span>BIRTHDAY!</span></h1>
+      <p class="welcome-subtitle">Your little world is waiting.</p>
+      <button id="enter" class="pixel-button">▶ START GAME</button>
+      <p class="welcome-hint">PRESS START TO ENTER</p>
     </div>
-    <span class="floating star-one">✦</span>
-    <span class="floating star-two">✧</span>
-    <span class="floating heart-one">♡</span>
+    <div class="welcome-ground" aria-hidden="true"></div>
   </section>
 
-  <main id="room" class="room" hidden>
-    <header class="room-header">
-      <button id="back" class="text-button">← back</button>
-      <p>✧ a tiny birthday universe ✧</p>
-      <span>♡</span>
+  <!-- GAME -->
+  <main id="room" class="game-screen" hidden>
+    <header class="game-header">
+      <button id="back" class="small-button">← EXIT</button>
+      <div class="game-title">BDAY-MOTO <span>★</span></div>
+      <div id="quest-count" class="quest-count">QUEST 0/5</div>
     </header>
 
-    
-<section class="room-scene">
-      <div class="pixel-room-decor" aria-hidden="true">
+    <section class="game-world" aria-label="Interactive pixel birthday bedroom">
+
+      <!-- ROOM BACKGROUND AND FURNITURE -->
+      <div class="room-background" aria-hidden="true">
+        <div class="wall-pixels"></div>
+
         <div class="pixel-window">
-          <span class="window-shine"></span>
-          <span class="window-moon"></span>
+          <div class="window-sky"></div>
+          <div class="window-moon">✦</div>
+          <div class="window-star star-a">✦</div>
+          <div class="window-star star-b">·</div>
+          <div class="window-cross"></div>
+          <div class="window-sill"></div>
         </div>
 
-        <div class="pixel-poster">B-DAY<br>PARTY!</div>
+        <div class="pixel-poster">
+          <span>IT'S YOUR</span>
+          <strong>DAY!</strong>
+          <i>♥ ♥ ♥</i>
+        </div>
 
         <div class="pixel-shelf">
-          <span></span><span></span><span></span>
+          <span class="shelf-book book-red"></span>
+          <span class="shelf-book book-gold"></span>
+          <span class="shelf-plant">♣</span>
         </div>
 
         <div class="pixel-bed">
+          <div class="bed-headboard"></div>
           <div class="bed-pillow"></div>
           <div class="bed-blanket"></div>
+          <div class="bed-blanket-stripe"></div>
+          <div class="bed-leg leg-left"></div>
+          <div class="bed-leg leg-right"></div>
         </div>
 
         <div class="pixel-desk">
-          <div class="desk-screen"></div>
-          <div class="desk-keyboard"></div>
-          <div class="desk-leg"></div>
+          <div class="computer">
+            <div class="computer-screen"><span>♥</span><i>_</i></div>
+            <div class="computer-stand"></div>
+            <div class="computer-base"></div>
+          </div>
+          <div class="keyboard"></div>
+          <div class="desk-top"></div>
+          <div class="desk-leg desk-leg-left"></div>
+          <div class="desk-leg desk-leg-right"></div>
         </div>
 
-        <div class="pixel-lamp"></div>
-        <div class="pixel-gift gift-one"></div>
-        <div class="pixel-gift gift-two"></div>
         <div class="pixel-rug"></div>
+        <div class="pixel-plant"><span>♣</span><i></i></div>
+        <div class="floor-pixels"></div>
       </div>
 
-      <div class="scene-sign">HAPPY BIRTHDAY!</div>
-
-
-      <div class="decorations" aria-hidden="true">
-        <span>✦</span><span>♡</span><span>✧</span>
+      <!-- BIRTHDAY ROOM SIGN -->
+      <div class="birthday-sign">
+        <span>★ HAPPY BIRTHDAY ★</span>
       </div>
 
-      <section class="station balloons-station">
-        <p class="station-label">🎈 pop a balloon</p>
-        <div id="balloons" class="balloons">
-          <button class="balloon pink" aria-label="Pop pink balloon">♥</button>
-          <button class="balloon peach" aria-label="Pop peach balloon">♥</button>
-          <button class="balloon lilac" aria-label="Pop lilac balloon">♥</button>
-          <button class="balloon yellow" aria-label="Pop yellow balloon">♥</button>
-          <button class="balloon blue" aria-label="Pop blue balloon">♥</button>
+      <!-- BALLOONS -->
+      <button id="balloon-object" class="world-object balloon-object" aria-label="Pop the birthday balloons">
+        <span class="pixel-balloon balloon-red">♥</span>
+        <span class="pixel-balloon balloon-pink">♥</span>
+        <span class="pixel-balloon balloon-dark">♥</span>
+        <span class="balloon-string string-one"></span>
+        <span class="balloon-string string-two"></span>
+        <span class="balloon-string string-three"></span>
+        <span class="object-hint">BALLOONS</span>
+      </button>
+
+      <!-- BIRTHDAY CAKE -->
+      <button id="cake-object" class="world-object cake-object" aria-label="Make a wish at the birthday cake">
+        <span class="cake-flames"><i>♦</i><i>♦</i><i>♦</i></span>
+        <span class="pixel-cake cake-top"></span>
+        <span class="pixel-cake cake-middle"></span>
+        <span class="pixel-cake cake-bottom"></span>
+        <span class="cake-plate"></span>
+        <span class="object-hint">MAKE A WISH</span>
+      </button>
+
+      <!-- GIFTS -->
+      <button id="gift-object" class="world-object gift-object" aria-label="Open your birthday gift">
+        <span class="gift-box gift-red"><i></i></span>
+        <span class="gift-box gift-purple"><i></i></span>
+        <span class="object-hint">OPEN GIFT</span>
+      </button>
+
+      <!-- CAT -->
+      <button id="cat-object" class="world-object cat-object" aria-label="Talk to the birthday cat">
+        <span class="pixel-cat">
+          <span class="cat-ear cat-ear-left"></span>
+          <span class="cat-ear cat-ear-right"></span>
+          <span class="cat-face">•ᴗ•</span>
+          <span class="cat-body"></span>
+          <span class="cat-tail"></span>
+        </span>
+        <span class="object-hint">PET THE CAT</span>
+      </button>
+
+      <!-- PLAYER CHARACTER -->
+      <div id="player" class="player" role="img" aria-label="Your pixel character">
+        <div class="player-shadow"></div>
+        <div class="player-sprite">
+          <div class="player-hair"></div>
+          <div class="player-head">
+            <span class="player-eyes"></span>
+          </div>
+          <div class="player-body"></div>
+          <div class="player-arm arm-left"></div>
+          <div class="player-arm arm-right"></div>
+          <div class="player-leg leg-one"></div>
+          <div class="player-leg leg-two"></div>
         </div>
-        <p id="balloon-message" class="message" aria-live="polite"></p>
+      </div>
+
+      <!-- INTERACTION MESSAGE -->
+      <div id="interaction-prompt" class="interaction-prompt" aria-live="polite">
+        WELCOME HOME! USE ARROW KEYS OR WASD TO MOVE.
+      </div>
+
+    </section>
+
+    <!-- GAME CONTROLS -->
+    <section class="game-controls">
+      <div class="control-instructions">
+        <span class="control-heading">HOW TO PLAY</span>
+        <span>↑ ↓ ← → OR W A S D TO MOVE</span>
+        <span>WALK NEAR AN OBJECT AND PRESS ENTER</span>
+      </div>
+
+      <div class="mobile-controls" aria-label="Touch movement controls">
+        <button data-move="up" aria-label="Move up">▲</button>
+        <div class="horizontal-controls">
+          <button data-move="left" aria-label="Move left">◀</button>
+          <button data-move="down" aria-label="Move down">▼</button>
+          <button data-move="right" aria-label="Move right">▶</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUEST AND ACTIVITY PANEL -->
+    <section class="birthday-menu">
+      <div class="menu-heading">
+        <span>★ YOUR BIRTHDAY QUEST ★</span>
+        <span id="quest-progress">0 / 5 FOUND</span>
+      </div>
+
+      <div class="quest-list">
+        <div class="quest-item" id="quest-balloons">○ Pop the balloons</div>
+        <div class="quest-item" id="quest-cake">○ Make a birthday wish</div>
+        <div class="quest-item" id="quest-gift">○ Open your gift</div>
+        <div class="quest-item" id="quest-cat">○ Say hello to the cat</div>
+        <div class="quest-item" id="quest-notes">○ Leave a little love</div>
+      </div>
+
+      <section id="message-panel" class="message-panel" hidden>
+        <button id="close-panel" class="close-panel" aria-label="Close panel">✕</button>
+        <h2 id="panel-title">A LITTLE SURPRISE</h2>
+        <div id="panel-content"></div>
       </section>
 
-      <section class="station cake-station">
-        <p class="station-label">🎂 make a wish</p>
-        <button id="cake" class="cake" aria-label="Blow out the birthday candles">
-          <span class="candles"><i>🕯️</i><i>🕯️</i><i>🕯️</i></span>
-          <span class="cake-top"></span>
-          <span class="cake-middle"></span>
-          <span class="cake-bottom"></span>
-          <span class="cake-plate"></span>
-        </button>
-        <p id="cake-message" class="message">click the cake to blow out the candles</p>
-      </section>
-
-      <section class="station pet-station">
-        <p class="station-label">🐾 say hello</p>
-        <button id="cat" class="cat" aria-label="Pet the party cat">🐈</button>
-        <p id="cat-message" class="message">psst... i'm the birthday kitty</p>
-      </section>
-
-      <section class="station notes-station">
-        <p class="station-label">💌 leave a little love</p>
+      <!-- LOVE NOTE FORM -->
+      <section class="note-area">
+        <h2>♡ LEAVE A LITTLE LOVE ♡</h2>
         <form id="note-form">
           <label for="note">Write a birthday message</label>
-          <textarea id="note" maxlength="120" rows="3" required placeholder="wishing you all the lovely things..."></textarea>
-          <button class="button" type="submit">pin your note ♡</button>
+          <textarea id="note" maxlength="180" rows="3" placeholder="Wishing you all the lovely things..." required></textarea>
+          <button class="pixel-button" type="submit">PIN YOUR NOTE ♥</button>
         </form>
         <div id="notes" class="notes" aria-live="polite"></div>
       </section>
 
-      <section class="station photo-station">
-        <p class="station-label">📸 little photo booth</p>
+      <!-- OPTIONAL PHOTO BOOTH -->
+      <section class="photo-area">
+        <h2>★ BIRTHDAY PHOTO BOOTH ★</h2>
         <div class="photo-frame">
           <video id="video" autoplay playsinline muted hidden></video>
           <canvas id="canvas" hidden></canvas>
-          <div id="photo-placeholder">♡<br><span>your birthday memories go here</span></div>
+          <div id="photo-placeholder">♡<br><span>YOUR MEMORY GOES HERE</span></div>
           <img id="photo" alt="Your birthday photo" hidden>
         </div>
         <div class="photo-actions">
-          <button id="start-camera" class="button">open camera</button>
-          <button id="take-photo" class="button" hidden>say cheese!</button>
-          <a id="download-photo" class="button" hidden download="little-party-room-birthday.png">download ♡</a>
+          <button id="start-camera" class="pixel-button" type="button">OPEN CAMERA</button>
+          <button id="take-photo" class="pixel-button" type="button" hidden>SAY CHEESE!</button>
+          <a id="download-photo" class="pixel-button" download="bday-moto-memory.png" hidden>DOWNLOAD PHOTO</a>
         </div>
-        <p id="camera-message" class="message" aria-live="polite">camera access is optional</p>
+        <p id="camera-message" class="camera-message" aria-live="polite">Camera access is optional.</p>
       </section>
     </section>
 
-    <footer class="footer">
-      made with love, just for you ♡
-      <p>stay a little. make a little wish.</p>
+    <footer class="game-footer">
+      <p>MADE WITH ♥ JUST FOR YOU</p>
+      <span>STAY A LITTLE. MAKE A LITTLE WISH.</span>
     </footer>
   </main>
 
-<script src="./gifts.js"></script>
-  
 </body>
 </html>
