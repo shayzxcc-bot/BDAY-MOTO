@@ -1029,3 +1029,48 @@ textarea::placeholder {
     transform-origin: bottom left;
   }
 }
+
+
+/* ===== FIX PIXEL ROOM VISIBILITY ===== */
+
+.room-scene {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Keep the room decorations above the background */
+.room-scene .pixel-room-decor {
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep existing birthday panels above the decorations */
+.room-scene > :not(.pixel-room-decor) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Let the pixel bedroom show subtly around the game panels */
+.room-scene .station {
+  background-color: rgba(25, 13, 25, 0.88);
+}
+
+/* Give the room a more game-like floor */
+.room-scene {
+  background-image:
+    linear-gradient(rgba(255, 45, 85, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 45, 85, 0.12) 1px, transparent 1px),
+    linear-gradient(180deg, #21101d, #100b12);
+  background-size: 24px 24px, 24px 24px, 100% 100%;
+}
+
+/* Make pixel furniture clearer */
+.room-scene .pixel-window,
+.room-scene .pixel-poster,
+.room-scene .pixel-bed,
+.room-scene .pixel-desk,
+.room-scene .pixel-gift,
+.room-scene .pixel-rug {
+  image-rendering: pixelated;
+}
+
