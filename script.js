@@ -1,371 +1,513 @@
 
-const $ = (selector) => document.querySelector(selector);
+/* ==========================================
+   BDAY-MOTO — BIRTHDAY ROOM GAME
+   ========================================== */
 
-const welcome = $("#welcome");
-const room = $("#room");
+document.addEventListener("DOMContentLoaded", () => {
+  const $ = (selector) => document.querySelector(selector);
 
-// Retro game progress.
-let discoveries = 0;
-const discoveredObjects = new Set();
+  const welcome = $("#welcome");
+  const room = $("#room");
+  const enterButton = $("#enter");
+  const backButton = $("#back");
+  const world = $(".game-world");
+  const player = $("#player");
+  const prompt = $("#interaction-prompt");
 
-const gameHud = document.createElement("div");
-gameHud.id = "game-hud";
-gameHud.setAttribute("role", "status");
-gameHud.setAttribute("aria-live", "polite");
-gameHud.style.cssText = `
-  padding: 12px;
-  margin: 0 0 14px;
-  background: #160b13;
-  color: #ff5277;
-  border: 3px solid #713047;
-  box-shadow: 4px 4px 0 #09070c;
-  font: 10px/2 "Press Start 2P", monospace;
-  text-align: center;
-`;
-gameHud.textContent = "♥ BIRTHDAY QUEST: 0 / 4 DISCOVERIES";
+  const messagePanel = $("#message-panel");
+  const panelTitle = $("#panel-title");
+  const panelContent = $("#panel-content");
+  const closePanel = $("#close-panel");
 
-room.querySelector(".room-scene").prepend(gameHud);
+  const questCount = $("#quest-count");
+  const questProgress = $("#quest-progress");
+  const questItems = {
+    balloons: $("#quest-balloons"),
+    cake: $("#quest-cake"),
+    gift: $("#quest-gift"),
+    cat: $("#quest-cat"),
+    notes: $("#quest-notes")
+  };
 
-function discover(id, message) {
-  if (!discoveredObjects.has(id)) {
-    discoveredObjects.add(id);
-    discoveries++;
-    gameHud.textContent =
-      `♥ BIRTHDAY QUEST: ${discoveries} / 4 DISCOVERIES`;
-
-    if (discoveries === 4) {
-      gameHud.textContent = "★ QUEST COMPLETE! YOU ARE AMAZING! ★";
-      celebrate();
+  const objects = [
+    {
+      id: "balloon-object",
+      name: "Balloons",
+      quest: "balloons",
+      title: "A ROOM FULL OF BALLOONS",
+      message:
+        "Every balloon carries a little wish for you. 🎈\n\nMay your days be filled with happiness, laughter, and beautiful surprises."
+    },
+    {
+      id: "cake-object",
+      name: "Birthday Cake",
+      quest: "cake",
+      title: "MAKE A BIRTHDAY WISH",
+      message:
+        "The candles are glowing just for you. 🎂\n\nClose your eyes, make a wish, and remember that you deserve all the good things coming your way.\n\nHappy Birthday! ❤️"
+    },
+    {
+      id: "gift-object",
+      name: "Gift",
+      quest: "gift",
+      title: "A LITTLE PRESENT",
+      message:
+        "You found your birthday present! 🎁\n\nInside is a reminder that you are special, appreciated, and loved.\n\nMay this new chapter bring you countless reasons to smile."
+    },
+    {
+      id: "cat-object",
+      name: "Birthday Cat",
+      quest: "cat",
+      title: "MEET THE BIRTHDAY CAT",
+      message:
+        "Meow! 🐈 The birthday cat has chosen you as its favorite human.\n\nYour reward: unlimited imaginary cuddles and extra birthday luck."
     }
+  ];
+
+  const completed = new Set();
+  let playerX = 48;
+  let playerY = 57;
+  let facing = "down";
+  let cameraStream = null;
+  let nearbyObject = null;
+
+  const clamp = (value, min, max) =>
+    Math.max(min, Math.min(max, value));
+
+  function showPanel(title, message) {
+    if (!messagePanel) return;
+
+    if (panelTitle) panelTitle.textContent = title;
+    if (panelContent) panelContent.textContent = message;
+
+    messagePanel.hidden = false;
   }
 
-  if (message) {
-    gameHud.title = message;
+  function hidePanel() {
+    if (messagePanel) messagePanel.hidden = true;
   }
-}
 
-function celebrate() {
-  const scene = $(".room-scene");
+  function updatePlayer() {
+    if (!player) return;
 
-  for (let i = 0; i < 18; i++) {
-    const spark = document.createElement("span");
-    spark.textContent = ["♥", "✦", "★", "✧"][i % 4];
-    spark.setAttribute("aria-hidden", "true");
-    spark.style.cssText = `
-      position: absolute;
-      z-index: 5;
-      left: ${5 + Math.random() * 90}%;
-      top: ${10 + Math.random() * 70}%;
-      color: ${i % 2 ? "#ff304f" : "#ffd166"};
-      font-size: ${16 + Math.random() * 18}px;
-      pointer-events: none;
-      animation: pixel-float 1.2s steps(4, end) both;
-    `;
-
-    scene.appendChild(spark);
-    window.setTimeout(() => spark.remove(), 1400);
+    player.style.left = `${playerX}%`;
+    player.style.top = `${playerY}%`;
+    player.dataset.facing = facing;
   }
-}
 
-// Enter and leave the party room.
-$("#enter").addEventListener("click", () => {
-  welcome.hidden = true;
-  room.hidden = false;
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
+  function updateQuest() {
+    const total = Object.keys(questItems).length;
+    const count = completed.size;
 
-$("#back").addEventListener("click", () => {
-  stopCamera();
-  room.hidden = true;
-  welcome.hidden = false;
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
-
-// Balloon surprises.
-const birthdayMessages = [
-  "you deserve all the happiness in the world ♡",
-  "may this year bring you little miracles ✨",
-  "you make the world a little brighter!",
-  "sending you the biggest birthday hug 💌",
-  "never forget how loved you are ♡"
-];
-
-const balloonButtons = [...document.querySelectorAll(".balloon")];
-const balloonMessage = $("#balloon-message");
-let poppedBalloons = 0;
-
-balloonButtons.forEach((balloon, index) => {
-  balloon.addEventListener("click", () => {
-    if (balloon.classList.contains("popped")) return;
-
-    balloon.classList.add("popped");
-    balloon.disabled = true;
-    poppedBalloons++;
-
-    balloonMessage.textContent = birthdayMessages[index];
-
-    if (poppedBalloons === balloonButtons.length) {
-      balloonMessage.textContent =
-        "★ ALL BALLOONS POPPED! YOU WIN A BIG BIRTHDAY HUG! ★";
-      discover("balloons", "All balloons popped!");
-      celebrate();
+    if (questCount) {
+      questCount.textContent = `${count}/${total}`;
     }
-  });
-});
 
-// Birthday cake.
-let candlesBlown = false;
+    if (questProgress) {
+      const bar = questProgress.firstElementChild || questProgress;
+      bar.style.width = `${(count / total) * 100}%`;
 
-$("#cake").addEventListener("click", () => {
-  const cake = $("#cake");
-  const message = $("#cake-message");
+      if (questProgress.firstElementChild) {
+        questProgress.setAttribute(
+          "aria-valuenow",
+          String(count)
+        );
+      }
+    }
 
-  candlesBlown = !candlesBlown;
-  cake.classList.toggle("is-blown", candlesBlown);
-  cake.setAttribute("aria-pressed", String(candlesBlown));
+    Object.entries(questItems).forEach(([key, item]) => {
+      if (!item) return;
 
-  message.textContent = candlesBlown
-    ? "★ WISH UNLOCKED! MAY YOUR DREAMS COME TRUE! ★"
-    : "the candles are back! make another wish ♡";
-
-  cake.querySelectorAll(".candles i").forEach((candle) => {
-    candle.style.visibility = candlesBlown ? "hidden" : "visible";
-  });
-
-  if (candlesBlown) {
-    discover("cake", "Birthday wish unlocked!");
-    celebrate();
-  }
-});
-
-// Birthday cat.
-const catMessages = [
-  "meow! happy birthday! 🐾",
-  "pspsps... you are my favorite human",
-  "purrrr... make a little wish ♡",
-  "the birthday kitty sends kisses!",
-  "meow meow! stay a little longer",
-  "♥ SECRET CAT MESSAGE: YOU ARE LOVED ♥"
-];
-
-let catClicks = 0;
-
-$("#cat").addEventListener("click", () => {
-  $("#cat-message").textContent =
-    catMessages[catClicks % catMessages.length];
-
-  catClicks++;
-
-  discover("cat", "You befriended the birthday kitty!");
-
-  if (catClicks % catMessages.length === 0) {
-    $("#cat-message").textContent =
-      "★ CAT LEVEL COMPLETE! PURRRRFECT! ★";
-    celebrate();
-  }
-});
-
-// Love notes saved in this browser.
-const notesKey = "little-party-room-notes";
-const notesContainer = $("#notes");
-const noteForm = $("#note-form");
-const noteInput = $("#note");
-
-function loadNotes() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(notesKey) || "[]");
-
-    return Array.isArray(saved)
-      ? saved
-          .filter((note) => typeof note === "string")
-          .slice(-30)
-      : [];
-  } catch {
-    return [];
-  }
-}
-
-let notes = loadNotes();
-
-function renderNotes() {
-  notesContainer.replaceChildren();
-
-  notes.forEach((text) => {
-    const card = document.createElement("div");
-    card.className = "note-card";
-    card.textContent = text;
-    notesContainer.appendChild(card);
-  });
-}
-
-noteForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-
-  const text = noteInput.value.trim();
-  if (!text) return;
-
-  notes.push(text);
-  notes = notes.slice(-30);
-
-  try {
-    localStorage.setItem(notesKey, JSON.stringify(notes));
-  } catch {
-    // Notes remain visible for this session.
-  }
-
-  renderNotes();
-  noteInput.value = "";
-  noteInput.focus();
-
-  discover("notes", "A little love note was left!");
-  $("#balloon-message").textContent =
-    "♥ YOUR MESSAGE HAS BEEN PINNED! ♥";
-});
-
-renderNotes();
-
-// Optional photo booth.
-const video = $("#video");
-const canvas = $("#canvas");
-const photo = $("#photo");
-const placeholder = $("#photo-placeholder");
-const startCameraButton = $("#start-camera");
-const takePhotoButton = $("#take-photo");
-const downloadButton = $("#download-photo");
-const cameraMessage = $("#camera-message");
-
-let cameraStream = null;
-let photoUrl = null;
-
-function stopCamera() {
-  if (cameraStream) {
-    cameraStream.getTracks().forEach((track) => track.stop());
-    cameraStream = null;
-  }
-
-  video.srcObject = null;
-  video.hidden = true;
-  takePhotoButton.hidden = true;
-}
-
-startCameraButton.addEventListener("click", async () => {
-  if (!navigator.mediaDevices?.getUserMedia) {
-    cameraMessage.textContent =
-      "Camera access needs HTTPS or localhost and a supported browser.";
-    return;
-  }
-
-  startCameraButton.disabled = true;
-  cameraMessage.textContent = "REQUESTING CAMERA ACCESS...";
-
-  try {
-    stopCamera();
-
-    cameraStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: "user" },
-      audio: false
+      item.classList.toggle("done", completed.has(key));
+      item.setAttribute(
+        "aria-label",
+        `${key}: ${completed.has(key) ? "completed" : "not completed"}`
+      );
     });
 
-    video.srcObject = cameraStream;
-    await video.play();
-
-    video.hidden = false;
-    photo.hidden = true;
-    placeholder.hidden = true;
-    downloadButton.hidden = true;
-    takePhotoButton.hidden = false;
-
-    startCameraButton.textContent = "RESTART CAMERA";
-    cameraMessage.textContent = "READY PLAYER ONE? SAY CHEESE! ♥";
-  } catch (error) {
-    stopCamera();
-
-    cameraMessage.textContent =
-      error.name === "NotAllowedError"
-        ? "Camera permission denied. Check your browser settings."
-        : "Couldn't open the camera. Please check it and try again.";
-  } finally {
-    startCameraButton.disabled = false;
-  }
-});
-
-takePhotoButton.addEventListener("click", () => {
-  if (!video.videoWidth || !video.videoHeight) {
-    cameraMessage.textContent =
-      "CAMERA LOADING... TRY AGAIN IN A MOMENT!";
-    return;
+    if (count === total) {
+      showPrompt("Birthday quest complete! ❤️");
+    }
   }
 
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
+  function showPrompt(message) {
+    if (prompt) prompt.textContent = message;
+  }
 
-  const context = canvas.getContext("2d");
+  function completeQuest(key) {
+    if (!key || completed.has(key)) return;
 
-  // Mirror the preview for a selfie.
-  context.translate(canvas.width, 0);
-  context.scale(-1, 1);
-  context.drawImage(video, 0, 0, canvas.width, canvas.height);
-  context.setTransform(1, 0, 0, 1, 0, 0);
+    completed.add(key);
+    updateQuest();
+  }
 
-  // Black and red birthday caption.
-  const captionHeight = Math.max(64, canvas.width * 0.14);
+  function openObject(object) {
+    if (!object) return;
 
-  context.fillStyle = "#160b13";
-  context.fillRect(
-    0,
-    canvas.height - captionHeight,
-    canvas.width,
-    captionHeight
-  );
+    completeQuest(object.quest);
 
-  context.fillStyle = "#ff5277";
-  context.textAlign = "center";
-  context.textBaseline = "middle";
-  context.font =
-    `bold ${Math.max(18, canvas.width * 0.035)}px monospace`;
+    let message = object.message;
 
-  context.fillText(
-    "HAPPY BIRTHDAY! ♥",
-    canvas.width / 2,
-    canvas.height - captionHeight / 2,
-    canvas.width - 20
-  );
+    if (object.quest === "cake") {
+      message += "\n\n🎉 Your birthday wish has been made!";
+    }
 
-  canvas.toBlob((blob) => {
-    if (!blob) {
-      cameraMessage.textContent =
-        "Couldn't save that photo. Please try again.";
+    showPanel(object.title, message);
+  }
+
+  function getObjectCenter(element) {
+    const worldRect = world.getBoundingClientRect();
+    const objectRect = element.getBoundingClientRect();
+
+    return {
+      x:
+        ((objectRect.left + objectRect.width / 2 - worldRect.left) /
+          worldRect.width) *
+        100,
+      y:
+        ((objectRect.top + objectRect.height / 2 - worldRect.top) /
+          worldRect.height) *
+        100
+    };
+  }
+
+  function findNearestObject() {
+    if (!world || !player) return null;
+
+    let nearest = null;
+    let nearestDistance = Infinity;
+
+    objects.forEach((object) => {
+      const element = document.getElementById(object.id);
+      if (!element) return;
+
+      const center = getObjectCenter(element);
+      const dx = center.x - playerX;
+      const dy = center.y - playerY;
+      const distance = Math.hypot(dx, dy);
+
+      if (distance < nearestDistance) {
+        nearestDistance = distance;
+        nearest = object;
+      }
+    });
+
+    return { object: nearest, distance: nearestDistance };
+  }
+
+  function updateNearbyObject() {
+    const result = findNearestObject();
+
+    if (!result || result.distance > 20) {
+      nearbyObject = null;
+      showPrompt("Move around and explore your birthday room!");
       return;
     }
 
-    if (photoUrl) URL.revokeObjectURL(photoUrl);
-
-    photoUrl = URL.createObjectURL(blob);
-    photo.src = photoUrl;
-    photo.hidden = false;
-    video.hidden = true;
-    downloadButton.hidden = false;
-    downloadButton.href = photoUrl;
-    downloadButton.download = "birthday-pixel-memory.png";
-
-    cameraMessage.textContent = "♥ MEMORY SAVED! LOOKING AMAZING! ♥";
-
-    discover("photo", "Birthday photo captured!");
-  }, "image/png");
-});
-
-downloadButton.addEventListener("click", () => {
-  if (photoUrl) {
-    downloadButton.href = photoUrl;
+    nearbyObject = result.object;
+    showPrompt(`Press E or tap ${nearbyObject.name} to interact`);
   }
-});
 
-// Release the camera when the visitor leaves the page.
-window.addEventListener("pagehide", () => {
-  stopCamera();
+  function movePlayer(dx, dy) {
+    if (!world || !player || !room || room.hidden) return;
 
-  if (photoUrl) {
-    URL.revokeObjectURL(photoUrl);
-    photoUrl = null;
+    if (dx !== 0) facing = dx < 0 ? "left" : "right";
+    else if (dy !== 0) facing = dy < 0 ? "up" : "down";
+
+    playerX = clamp(playerX + dx, 3, 93);
+    playerY = clamp(playerY + dy, 5, 85);
+
+    updatePlayer();
+    updateNearbyObject();
   }
+
+  function interactNearby() {
+    const result = findNearestObject();
+
+    if (result && result.distance <= 20) {
+      openObject(result.object);
+    } else {
+      showPanel(
+        "EXPLORE YOUR ROOM",
+        "Walk closer to the balloons, birthday cake, gift, or cat. Then press E to interact! ❤️"
+      );
+    }
+  }
+
+  /* ENTER AND EXIT THE GAME */
+
+  if (enterButton) {
+    enterButton.addEventListener("click", () => {
+      if (welcome) welcome.hidden = true;
+      if (room) room.hidden = false;
+
+      updatePlayer();
+      updateNearbyObject();
+    });
+  }
+
+  if (backButton) {
+    backButton.addEventListener("click", () => {
+      if (room) room.hidden = true;
+      if (welcome) welcome.hidden = false;
+      hidePanel();
+    });
+  }
+
+  /* CLICKABLE BIRTHDAY OBJECTS */
+
+  objects.forEach((object) => {
+    const element = document.getElementById(object.id);
+    if (!element) return;
+
+    element.addEventListener("click", () => {
+      openObject(object);
+    });
+
+    element.addEventListener("focus", () => {
+      nearbyObject = object;
+      showPrompt(`Tap or press Enter to explore ${object.name}`);
+    });
+  });
+
+  /* KEYBOARD CONTROLS */
+
+  document.addEventListener("keydown", (event) => {
+    const target = event.target;
+    const tag = target && target.tagName
+      ? target.tagName.toLowerCase()
+      : "";
+
+    if (
+      tag === "input" ||
+      tag === "textarea" ||
+      tag === "select" ||
+      (target && target.isContentEditable)
+    ) {
+      return;
+    }
+
+    const key = event.key.toLowerCase();
+    const step = event.shiftKey ? 4 : 2;
+
+    const movement = {
+      arrowup: [0, -step],
+      w: [0, -step],
+      arrowdown: [0, step],
+      s: [0, step],
+      arrowleft: [-step, 0],
+      a: [-step, 0],
+      arrowright: [step, 0],
+      d: [step, 0]
+    };
+
+    if (movement[key]) {
+      event.preventDefault();
+      movePlayer(...movement[key]);
+      return;
+    }
+
+    if (key === "e" || key === "enter") {
+      if (room && !room.hidden && !messagePanel?.hidden) {
+        return;
+      }
+
+      if (room && !room.hidden) {
+        event.preventDefault();
+        interactNearby();
+      }
+    }
+
+    if (key === "escape") {
+      hidePanel();
+    }
+  });
+
+  /* MOBILE MOVEMENT BUTTONS */
+
+  document.querySelectorAll("[data-move]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const direction = button.dataset.move;
+      const step = 5;
+
+      const movement = {
+        up: [0, -step],
+        down: [0, step],
+        left: [-step, 0],
+        right: [step, 0]
+      };
+
+      if (movement[direction]) {
+        movePlayer(...movement[direction]);
+      }
+    });
+  });
+
+  /* POP-UP CLOSE BUTTON */
+
+  if (closePanel) {
+    closePanel.addEventListener("click", hidePanel);
+  }
+
+  if (messagePanel) {
+    messagePanel.addEventListener("click", (event) => {
+      if (event.target === messagePanel) hidePanel();
+    });
+  }
+
+  /* BIRTHDAY NOTES */
+
+  const noteForm = $("#note-form");
+  const noteInput = $("#note");
+  const notesList = $("#notes");
+
+  if (noteForm && noteInput && notesList) {
+    noteForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const text = noteInput.value.trim();
+      if (!text) {
+        noteInput.focus();
+        return;
+      }
+
+      const item = document.createElement("li");
+      item.textContent = text;
+      notesList.appendChild(item);
+
+      noteInput.value = "";
+      completeQuest("notes");
+
+      showPanel(
+        "YOUR LOVE NOTE ❤️",
+        "Your message has been added to the birthday wall!\n\n" +
+          text
+      );
+    });
+  }
+
+  /* OPTIONAL CAMERA AND PHOTO BOOTH */
+
+  const video = $("#video");
+  const canvas = $("#canvas");
+  const photo = $("#photo");
+  const placeholder = $("#photo-placeholder");
+  const startCamera = $("#start-camera");
+  const takePhoto = $("#take-photo");
+  const downloadPhoto = $("#download-photo");
+  const cameraMessage = $("#camera-message");
+
+  function setCameraMessage(message) {
+    if (cameraMessage) cameraMessage.textContent = message;
+  }
+
+  function stopCamera() {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach((track) => track.stop());
+      cameraStream = null;
+    }
+
+    if (video) video.srcObject = null;
+  }
+
+  if (startCamera) {
+    startCamera.addEventListener("click", async () => {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        setCameraMessage(
+          "Camera access is not supported here. Open the website using HTTPS in a supported browser."
+        );
+        return;
+      }
+
+      try {
+        stopCamera();
+
+        cameraStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "user" },
+          audio: false
+        });
+
+        if (video) {
+          video.srcObject = cameraStream;
+          video.hidden = false;
+          await video.play();
+        }
+
+        if (placeholder) placeholder.hidden = true;
+        if (photo) photo.hidden = true;
+
+        setCameraMessage(
+          "Camera is ready! Smile, then select Take Photo. 📸"
+        );
+      } catch (error) {
+        setCameraMessage(
+          "Camera could not start. Check your browser's camera permission and try again."
+        );
+      }
+    });
+  }
+
+  if (takePhoto) {
+    takePhoto.addEventListener("click", () => {
+      if (!video || !canvas || !video.videoWidth) {
+        setCameraMessage(
+          "Start the camera first, or allow camera access in your browser."
+        );
+        return;
+      }
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+      const context = canvas.getContext("2d");
+      if (!context) {
+        setCameraMessage("Sorry, the photo could not be created.");
+        return;
+      }
+
+      context.save();
+      context.translate(canvas.width, 0);
+      context.scale(-1, 1);
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      context.restore();
+
+      const imageData = canvas.toDataURL("image/png");
+
+      if (photo) {
+        photo.src = imageData;
+        photo.hidden = false;
+      }
+
+      setCameraMessage("Photo captured! You can download it below. ❤️");
+    });
+  }
+
+  if (downloadPhoto) {
+    downloadPhoto.addEventListener("click", () => {
+      if (!photo || photo.hidden || !photo.src) {
+        setCameraMessage("Take a photo first, then download it.");
+        return;
+      }
+
+      const link = document.createElement("a");
+      link.href = photo.src;
+      link.download = "BDAY-MOTO-photo.png";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      setCameraMessage("Your birthday photo download has started!");
+    });
+  }
+
+  window.addEventListener("pagehide", stopCamera);
+
+  /* STARTING STATE */
+
+  if (messagePanel) messagePanel.hidden = true;
+  if (room) room.hidden = true;
+  if (welcome) welcome.hidden = false;
+
+  updatePlayer();
+  updateQuest();
 });
